@@ -119,9 +119,9 @@ int edit_outings(){
 }
 
 int change_outings(char crew[3]){
-    int l = 0;
     int choice;
     char lines[100][35];
+    int positions[100];
     int i = 0;
     int correct = 1;
     FILE * fh;
@@ -134,18 +134,19 @@ int change_outings(char crew[3]){
         exit(EXIT_FAILURE);
 
     while ((read = getline(&line, &len, fh)) != -1) {
-        ++l;
         if ((line[0] != '#') && (line[0] != '\n') && (line[0] != '/'))
         {
             if (crew[1] == line[27]){
                 printf("%d: ", i);
                 printf("%s", line);
+                positions[i] = ("%1d", ftell(fh));
                 strcpy(lines[i], line);
                 ++i;
             }
             else if (crew[0] == 'A'){
                 printf("%d: ", i);
                 printf("%s", line);
+                positions[i] = ("%1d", ftell(fh));
                 strcpy(lines[i], line);
                 ++i;
             }
@@ -153,22 +154,45 @@ int change_outings(char crew[3]){
     }
     if (line)
         free(line);
-    fclose(fh);
     printf("Which outing would you like to edit?\n");
     fscanf(stdin, "%d", &choice);
     if (choice >= i)
         printf("That's not a valid selection\n");
     else
     {
+        char day[6];
+        char start_time[4];
+        char finish_time[4];
+        char location[4];
+        char crew[2];
+        
         printf(lines[choice]);
-        printf("Which day would you like the outing to be on?\n");
-        printf("What time would you like the outing to start?\n");
-        printf("When would you like the outing to finish?\n");
-        printf("Where would you like the outing to occur?\n");
-        printf("Which crew is this outing for?\n");
-        fh = fopen("outings.dat", "w");
+        FILE * pFile;
+        pFile = fopen ("outings.dat" , "rb+");
+        fseek (pFile , positions[choice] - 30, SEEK_SET);
+        printf("Please enter the day this outing will occur on: ");
+        fscanf(stdin, "%s", &day);
+        fputs (day , pFile);
+        fputs ("; " , pFile);
+        printf("Please enter the start time in 24h format without a colon: ");
+        fscanf(stdin, "%s", &start_time);
+        fputs (start_time , pFile);
+        fputs ("; " , pFile);
+        printf("Please enter your finish time in 24h format without a colon: ");
+        fscanf(stdin, "%s", &finish_time);
+        fputs (finish_time , pFile);
+        fputs ("; " , pFile);
+        printf("Please enter the location for this outing: ");
+        fscanf(stdin, "%s", &location);
+        fputs (location , pFile);
+        fputs ("; " , pFile);
+        printf("Please enter which crew this outing is for: ");
+        fscanf(stdin, "%s", &crew);
+        fputs (crew , pFile);
+        fputs (";\n" , pFile);
+        fclose (pFile);
         i = 0;
-        replace(mystr, lines[choice], '*')
+        //replace(mystr, lines[choice], '*')
     }
     return 0;
 }
