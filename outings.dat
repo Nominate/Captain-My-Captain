@@ -1,0 +1,19 @@
+//The format of this document is as follows:
+//Date; Time; Location; Crew
+//The outings listed correspond to a file in the folder outings
+//For recurring outings the format will be:
+//Day (6 letter abbreviation); Start Time; End Time;Location; Crew;
+//locations is:  Radl, Gods, Tide, Isis, Read
+//dates are 010213 with no slashes etc
+//times are 0643 with no colons etc
+##Recurring##
+Monday; 0600; 0800; Isis; M1;
+Wednes; 0600; 0800; Isis; M1;
+Friday; 0600; 0800; Gods; M1;
+##End of Recurring##
+
+##Exceptions to Recurring Outings##
+##End of Exceptions to Recurring Outings##
+
+##One off Outings##
+##End of One off Outings##
