@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int main(){
     int choice = 0;
@@ -67,6 +68,8 @@ int view_outings(){
     return 0;
 }
 
+
+
 int print_outings(char crew[3]){
     int correct = 1;
     FILE * fh;
@@ -90,15 +93,89 @@ int print_outings(char crew[3]){
     return 0;
 }
 
-
 int edit_outings(){
-    printf("Which outing would you like to edit?");
+    int choice = 0;
+    printf("Which outing would you like to edit?\n");
+    printf("1) Show me all outings\n");
+    printf("2) Show me M1's outings\n");
+    printf("3) Show me M2's outings\n");
+    printf("4) Show me M3's outings\n");
+    printf("5) Show me M4's outings\n");
+    printf("Please make a selection: ");
+    fscanf(stdin, "%d", &choice);
+    if (choice == 1)
+        change_outings("ALL");
+    else if (choice == 2)
+        change_outings("M1");
+    else if (choice == 3)
+        change_outings("M2");
+    else if (choice == 4)
+        change_outings("M3");
+    else if (choice == 5)
+        change_outings("M4");
+    else
+        printf("That wasn't a valid selection\n");
     return 0;
+}
 
+int change_outings(char crew[3]){
+    int l = 0;
+    int choice;
+    char lines[100][35];
+    int i = 0;
+    int correct = 1;
+    FILE * fh;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    fh = fopen("outings.dat", "r");
+    if (fh == NULL)
+        exit(EXIT_FAILURE);
+
+    while ((read = getline(&line, &len, fh)) != -1) {
+        ++l;
+        if ((line[0] != '#') && (line[0] != '\n') && (line[0] != '/'))
+        {
+            if (crew[1] == line[27]){
+                printf("%d: ", i);
+                printf("%s", line);
+                strcpy(lines[i], line);
+                ++i;
+            }
+            else if (crew[0] == 'A'){
+                printf("%d: ", i);
+                printf("%s", line);
+                strcpy(lines[i], line);
+                ++i;
+            }
+        }
+    }
+    if (line)
+        free(line);
+    fclose(fh);
+    printf("Which outing would you like to edit?\n");
+    fscanf(stdin, "%d", &choice);
+    if (choice >= i)
+        printf("That's not a valid selection\n");
+    else
+    {
+        printf(lines[choice]);
+        printf("Which day would you like the outing to be on?\n");
+        printf("What time would you like the outing to start?\n");
+        printf("When would you like the outing to finish?\n");
+        printf("Where would you like the outing to occur?\n");
+        printf("Which crew is this outing for?\n");
+        fh = fopen("outings.dat", "w");
+        i = 0;
+        replace(mystr, lines[choice], '*')
+    }
+    return 0;
 }
 
 int schedule_outings(){
-
+    printf("");
+    printf("");
     return 0;
 
 }
